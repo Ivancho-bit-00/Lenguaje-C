@@ -1,4 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+#define N 15
+#define M 15
 
 /* Convierte número a carácter para imprimir */
 char showMap(int tipo) {
@@ -6,18 +11,21 @@ char showMap(int tipo) {
         case 0: return ' ';  // libre
         case 1: return '#';  // pared
         case 2: return '~';  // agua
+        case 3: return 'E';  // entrada
+        case 4: return 'S';  // salida
+        case 5: return '*';  // camino óptimo
         default: return '?';
     }
 }
 
 /* Crea el mapa según la elección del usuario */
-void chooseMap(int eleccion, int map[15][15]) {
+void chooseMap(int eleccion, int map[N][M]) {
     int i, j;
     switch (eleccion) {
-        case 1:  //Mapa 1
-            for (i = 0; i < 15; i++) {
-                for (j = 0; j < 15; j++) {
-                    if (j == 0 || i == 0 || j == 14 || i == 14) map[i][j] = 1;
+        case 1:
+            for (i = 0; i < N; i++) {
+                for (j = 0; j < M; j++) {
+                    if (j == 0 || i == 0 || j == M-1 || i == N-1) map[i][j] = 1;
                     else if ((i >= 3 && i <= 11) && (j == 1 || j == 3 || j == 4 || j == 6 || j == 7 || j == 8 || j == 10 || j == 11 || j == 13))
                         map[i][j] = 1;
                     else map[i][j] = 0;
@@ -26,10 +34,10 @@ void chooseMap(int eleccion, int map[15][15]) {
             map[3][2] = 1; map[3][12] = 1;
             break;
 
-        case 2:  //Mapa 2
-            for (i = 0; i < 15; i++) {
-                for (j = 0; j < 15; j++) {
-                    if (i == 0 || j == 0 || i == 14 || j == 14) map[i][j] = 1;
+        case 2:
+            for (i = 0; i < N; i++) {
+                for (j = 0; j < M; j++) {
+                    if (i == 0 || j == 0 || i == N-1 || j == M-1) map[i][j] = 1;
                     else map[i][j] = 0;
                 }
             }
@@ -40,10 +48,10 @@ void chooseMap(int eleccion, int map[15][15]) {
             map[2][5] = 2; map[8][6] = 2; map[11][9] = 2;
             break;
 
-        case 3:  //Camino Verticales
-            for (i = 0; i < 15; i++) {
-                for (j = 0; j < 15; j++) {
-                    if (i == 0 || j == 0 || i == 14 || j == 14)
+        case 3:
+            for (i = 0; i < N; i++) {
+                for (j = 0; j < M; j++) {
+                    if (i == 0 || j == 0 || i == N-1 || j == M-1)
                         map[i][j] = 1;
                     else if ((i >= 3 && i <= 11) && (j == 3 || j == 6 || j == 9 || j == 12))
                         map[i][j] = 1;
@@ -52,10 +60,10 @@ void chooseMap(int eleccion, int map[15][15]) {
             }
             break;
 
-        case 4: //Laberinto de los tres caminos
-            for (i = 0; i < 15; i++) {
-                for (j = 0; j < 15; j++) {
-                    if (i == 0 || j == 0 || i == 14 || j == 14)
+        case 4:
+            for (i = 0; i < N; i++) {
+                for (j = 0; j < M; j++) {
+                    if (i == 0 || j == 0 || i == N-1 || j == M-1)
                         map[i][j] = 1;
                     else map[i][j] = 0;
                 }
@@ -79,82 +87,137 @@ void chooseMap(int eleccion, int map[15][15]) {
     }
 }
 
-/* Muestra el mapa en pantalla */
-void printMap(int map[15][15]) {
-    printf("\nMapa (' '=libre, '#'=pared, '~'=agua):\n\n");
-    for (int i = 0; i < 15; i++) {
-        for (int j = 0; j < 15; j++) {
+/* Muestra el mapa */
+void printMap(int map[N][M]) {
+    printf("\n");
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < M; j++)
             printf("%c ", showMap(map[i][j]));
-        }
         printf("\n");
     }
 }
 
 /* Permite al usuario elegir entrada y salida válidas */
-void chooseEntryAndExit(int map[15][15], int *entradax, int *entraday, int *salidax, int *saliday) {
+void chooseEntryAndExit(int map[N][M], int *entradax, int *entraday, int *salidax, int *saliday) {
     int x, y;
-    
     printf("\n--- Elección de entrada ---\n");
     while (1) {
         printf("Ingrese coordenada de entrada (fila y columna entre 0 y 14): ");
         scanf("%d %d", &x, &y);
-        if (x >= 0 && x < 15 && y >= 0 && y < 15 && map[x][y] == 0) {
-            *entradax = x;
-            *entraday = y;
-            map[x][y] = 3; // marcar entrada
+        if (x >= 0 && x < N && y >= 0 && y < M && map[x][y] == 0) {
+            *entradax = x; *entraday = y;
+            map[x][y] = 3;
             break;
-        } else {
-            printf("❌ Posición inválida. Debe ser una celda libre.\n");
-        }
+        } else printf("❌ Posicion invalida. Debe ser una celda libre.\n");
     }
 
     printMap(map);
 
-    printf("\n--- Elección de salida ---\n");
+    printf("\n--- Eleccion de salida ---\n");
     while (1) {
         printf("Ingrese coordenada de salida (fila y columna entre 0 y 14): ");
         scanf("%d %d", &x, &y);
-        if (x >= 0 && x < 15 && y >= 0 && y < 15 && map[x][y] == 0) {
-            *salidax = x;
-            *saliday = y;
-            map[x][y] = 4; // marcar salida
+        if (x >= 0 && x < N && y >= 0 && y < M && map[x][y] == 0) {
+            *salidax = x; *saliday = y;
+            map[x][y] = 4;
             break;
-        } else {
-            printf("❌ Posición inválida. Debe ser una celda libre.\n");
+        } else printf("❌ Posición invalida. Debe ser una celda libre.\n");
+    }
+}
+
+/* Estructura para Dijkstra */
+typedef struct {
+    int x, y;
+    int dist;
+} Node;
+
+/* Distancia para encontrar el camino más corto considerando agua (costo 2) */
+int findShord(int map[N][M], int ex, int ey, int sx, int sy) {
+    int dist[N][M];
+    int visited[N][M] = {0};
+    int parentX[N][M], parentY[N][M];
+    int dx[4] = {-1, 1, 0, 0};
+    int dy[4] = {0, 0, -1, 1};
+
+    // Inicializar distancias
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < M; j++)
+            dist[i][j] = INT_MAX, parentX[i][j] = parentY[i][j] = -1;
+
+    dist[ex][ey] = 0;
+
+    while (1) {
+        int minDist = INT_MAX, ux = -1, uy = -1;
+
+        // Encontrar el nodo no visitado con menor distancia
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                if (!visited[i][j] && dist[i][j] < minDist) {
+                    minDist = dist[i][j];
+                    ux = i; uy = j;
+                }
+            }
+        }
+
+        if (ux == -1) break; // no hay más nodos alcanzables
+        visited[ux][uy] = 1;
+
+        if (ux == sx && uy == sy) break; // llegada
+
+        for (int k = 0; k < 4; k++) {
+            int vx = ux + dx[k];
+            int vy = uy + dy[k];
+            if (vx >= 0 && vx < N && vy >= 0 && vy < M && map[vx][vy] != 1) {
+                int cost = (map[vx][vy] == 2) ? 2 : 1;
+                if (dist[ux][uy] + cost < dist[vx][vy]) {
+                    dist[vx][vy] = dist[ux][uy] + cost;
+                    parentX[vx][vy] = ux;
+                    parentY[vx][vy] = uy;
+                }
+            }
         }
     }
+
+    if (dist[sx][sy] == INT_MAX) return 0; // no hay camino
+
+    // reconstruir el camino
+    int cx = sx, cy = sy;
+    while (!(cx == ex && cy == ey)) {
+        if (map[cx][cy] == 0 || map[cx][cy] == 2)
+            map[cx][cy] = 5;
+        int px = parentX[cx][cy];
+        int py = parentY[cx][cy];
+        cx = px; cy = py;
+    }
+
+    printf("\nCosto total del camino: %d\n", dist[sx][sy]);
+    return 1;
 }
 
 /* Programa principal */
 int main() {
-    int map[15][15];
-    int i, j, opc;
-    int ex, ey, sx, sy;
+    int map[N][M];
+    int opc, ex, ey, sx, sy;
 
     printf("Elige el mapa que quieres probar:\n");
     printf("1. Mapa simple\n");
     printf("2. Camino serpenteante\n");
     printf("3. Camino Verticales\n");
     printf("4. El laberinto de los tres caminos\n");
-    printf("Opción: ");
+    printf("Opcion: ");
     scanf("%d", &opc);
 
     chooseMap(opc, map);
     printMap(map);
 
     chooseEntryAndExit(map, &ex, &ey, &sx, &sy);
-    printf("\nMapa final con entrada (E) y salida (S):\n\n");
+    printf("\nBuscando el camino mqs eficiente (considerando agua con costo 2)...\n");
 
-    // Reemplazamos los marcadores 3 y 4 por caracteres visibles
-    for (i = 0; i < 15; i++) {
-        for (j = 0; j < 15; j++) {
-            if (map[i][j] == 3) printf("E ");
-            else if (map[i][j] == 4) printf("S ");
-            else printf("%c ", showMap(map[i][j]));
-        }
-        printf("\n");
-    }
+    if (findShord(map, ex, ey, sx, sy))
+        printf("\n✅ Camino optimo encontrado:\n");
+    else
+        printf("\n❌ No hay camino posible.\n");
 
-    printf("\nEntrada: (%d, %d)\nSalida: (%d, %d)\n", ex, ey, sx, sy);
+    printMap(map);
     return 0;
 }
