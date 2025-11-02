@@ -21,7 +21,12 @@ Para evitar bloqueos, seguir este orden:
 
 ## PROGRAMADOR 1: Estructuras de Datos Básicas
 
+**Contexto del trabajo:**  
+La consigna exige utilizar **al menos 3 estructuras de datos** (matrices, colas, pilas, listas enlazadas). Tu rol es crear los "bloques de construcción" fundamentales que los demás programadores usarán. Específicamente, implementarás una **cola** (necesaria para el algoritmo BFS de búsqueda de caminos) y una **lista enlazada** (para almacenar las coordenadas del camino encontrado). Estas estructuras deben ser simples, claras y bien documentadas para que tus compañeros puedan usarlas sin confusión.
+
 **Objetivo:** Implementar las 3 estructuras de datos mínimas requeridas (cola, pila, lista enlazada) de forma simple y funcional.
+
+**Relación con la consigna:** Cumple el objetivo específico _"Utilizar al menos tres estructuras de datos distintas"_.
 
 ### Actividades:
 
@@ -59,7 +64,12 @@ Para evitar bloqueos, seguir este orden:
 
 ## PROGRAMADOR 2: Módulo de Mapas
 
+**Contexto del trabajo:**  
+La consigna requiere que el programa pueda **"leer o generar un mapa del entorno"** donde cada celda está libre, ocupada o es un punto de inicio/destino. Tu trabajo es tomar el código existente en `labyrinth.c` (que ya tiene mapas funcionando), modularizarlo en archivos separados (`mapa.h` y `mapa.c`), agregar la capacidad de **cargar mapas desde archivos** y crear **al menos 3 archivos `.map` de prueba** con diferentes niveles de dificultad. Esto representa la tercera estructura de datos requerida: la **matriz bidimensional** que almacena el entorno.
+
 **Objetivo:** Separar la lógica del mapa en módulo independiente, agregar carga desde archivo y crear 3 mapas de prueba.
+
+**Relación con la consigna:** Cumple el requisito _"Leer o generar un mapa del entorno"_ y entregable _"Dataset de prueba: al menos 3 mapas distintos"_.
 
 ### Actividades:
 
@@ -98,7 +108,12 @@ Para evitar bloqueos, seguir este orden:
 
 ## PROGRAMADOR 3: Algoritmo BFS
 
+**Contexto del trabajo:**  
+El objetivo general de la consigna es **"planificar la ruta más corta o eficiente"** que permita al robot navegar desde un origen hasta un destino evitando obstáculos. Tu tarea es implementar el **algoritmo BFS (Breadth-First Search)**, que encuentra el camino con menos pasos en una grilla. Usarás la **cola** que implementó el Programador 1 y trabajarás sobre el **mapa** que provee el Programador 2. BFS es ideal porque explora todas las posiciones cercanas antes de avanzar más lejos, garantizando encontrar el camino mínimo. Deberás documentar bien tu código para explicarlo después en el informe y video.
+
 **Objetivo:** Implementar BFS (búsqueda por anchura) obligatorio para encontrar el camino más corto en pasos, usando la cola del Programador 1. **Versión simplificada para principiantes.**
+
+**Relación con la consigna:** Cumple el objetivo general _"planificar la ruta más corta"_ y objetivo específico _"Diseñar algoritmos que permitan descubrir rutas"_.
 
 ### Actividades:
 
@@ -148,7 +163,12 @@ Para evitar bloqueos, seguir este orden:
 
 ## PROGRAMADOR 4: Menú Principal y Main
 
+**Contexto del trabajo:**  
+La consigna exige que el programa pueda **"procesar comandos de usuario"** de forma robusta, permitir **"ingresar destinos"**, tener **"interfaz por consola"** y **"manejar errores"** como coordenadas inválidas o destinos inaccesibles. Tu rol es integrar todo el trabajo de los demás programadores en un programa funcional con un menú interactivo. El usuario debe poder: cargar un mapa, ver el mapa, definir posición inicial del robot, ingresar destino, calcular la ruta y visualizar el resultado. Eres el encargado de que todo el sistema funcione de forma cohesiva y que la experiencia del usuario sea clara y sin errores.
+
 **Objetivo:** Crear menú interactivo simple que integre todos los módulos y permita al usuario cargar mapas, elegir origen/destino, calcular ruta y visualizarla.
+
+**Relación con la consigna:** Cumple requisitos _"Procesar comandos de usuario"_, _"Permitir ingresar destinos"_, _"Interfaz por consola"_ y _"Manejar errores"_.
 
 ### Actividades:
 
@@ -199,9 +219,14 @@ Para evitar bloqueos, seguir este orden:
 
 ## GRUPO CONJUNTO: Integración y Documentación Final
 
+**Contexto del trabajo:**  
+Una vez que cada programador haya completado su parte, llega la fase más importante: **asegurar que todo funcione junto** y **preparar los entregables** que pide la consigna. Esto incluye: compilar el proyecto completo sin errores, probarlo exhaustivamente con los 3 mapas, redactar el **README** con instrucciones claras, crear el **informe técnico** explicando estructuras/algoritmos/decisiones, grabar el **video de 5 minutos** mostrando el funcionamiento y justificando la solución, y empaquetar todo para subir al aula virtual. Esta etapa es colaborativa y requiere coordinación del equipo completo.
+
 **Responsables:** Los 4 programadores en conjunto
 
 **Objetivo:** Integrar módulos, crear `Makefile`, probar con los 3 mapas, completar documentación (README, informe, video) para entregar.
+
+**Relación con la consigna:** Cumple requisitos de entrega _4A: "Código fuente y ejecutable"_, _4C: "Video explicativo"_ y _4D: "Informe técnico"_.
 
 ### Actividades:
 
