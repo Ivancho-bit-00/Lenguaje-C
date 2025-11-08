@@ -13,7 +13,7 @@ char showMap(int tipo) {
         case 2: return '~';  // agua
         case 3: return 'E';  // entrada
         case 4: return 'S';  // salida
-        case 5: return '*';  // camino óptimo
+        case 5: return '.';  // camino óptimo
         default: return '?';
     }
 }
